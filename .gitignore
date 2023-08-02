@@ -2,3 +2,4 @@
 */node_modules/*
 javascript/package-lock.json
 javascript/assets/*
+javascript/config/keys.json
