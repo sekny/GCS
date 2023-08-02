@@ -7,7 +7,7 @@ const serviceKey = path.join(__dirname, './keys.json')
 const { Storage } = Cloud
 const storage = new Storage({
   keyFilename: serviceKey,
-  projectId: 'k01property',
+  projectId: serviceKey.project_id,
 })
 
 module.exports = storage
