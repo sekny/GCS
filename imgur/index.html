@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Upload Image to Imgur</title>
+</head>
+
+<body>
+	<h3>A demonstration of how to access a File Upload Button</h3>
+
+	<input type="file" id="myFile">
+
+	<button id="submitBtn">Submit Mine</button>
+
+	<hr>
+	<img src="https://i.imgur.com/U7afLiO.png" id="img" height="200px">
+	<br>
+	<strong>
+		<p id="url"></p>
+	</strong>
+
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+	<script>
+		// With Auth
+		// const id = "1c2939b81b1e236";
+		// Without Auth
+		const id = "0e5d2de99abe1ba";
+		const secret = "3c805c54e3cd359bba7e18271b8a080b4c277538";
+
+		const img = document.getElementById("img");
+		const url = document.getElementById("url");
+		$('#submitBtn').click(function () {
+			var formData = new FormData();
+			formData.append("image", $("#myFile")[0].files[0]);
+
+
+			$.ajax({
+				url: "https://api.imgur.com/3/image",
+				type: "POST",
+				datatype: "json",
+				headers: {
+					"Authorization": "Client-ID " + id
+				},
+				data: formData,
+				success: function (response) {
+					console.log(response);
+					var photo = response.data.link;
+					var photo_hash = response.data.deletehash;
+
+					img.src = response.data.link
+					url.innerText = response.data.link
+					// requestImages();
+					requestSingleImage(response.data.id);
+				},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+
+		});
+
+		function requestImages() {
+			// https://api.imgur.com/3/account/{username}/images
+			$.ajax({
+				url: "https://api.imgur.com/3/account/me/images",
+				type: "GET",
+				datatype: "json",
+				headers: {
+					"Authorization": "Client-ID " + id
+				},
+				success: function (response) {
+					console.log("~~> Request get images success");
+					console.log(response);
+				},
+				error: function (error) {
+						console.log("~~> Request get image error");
+						console.log(error);
+},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+		}
+
+		function requestSingleImage(imageHash) {
+			// https://api.imgur.com/3/account/{username}/images
+			$.ajax({
+				url: "https://api.imgur.com/3/image/" + imageHash,
+				type: "GET",
+				datatype: "json",
+				headers: {
+					"Authorization": "Client-ID " + id
+				},
+				success: function (response) {
+					console.log("~~> Request get images success");
+					console.log(response);
+				},
+				error: function (error) {
+						console.log("~~> Request get image error");
+						console.log(error);
+},
+				cache: false,
+				contentType: false,
+				processData: false
+			});
+		}
+
+		/*
+			id: 1c2939b81b1e236
+			secret: 8c34c6f27bf5442ddf348d89850ce6de21272976
+		*/
+
+	</script>
+</body>
+
+</html>
