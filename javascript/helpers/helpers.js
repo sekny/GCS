@@ -1,7 +1,7 @@
 const util = require('util')
 // const gc = require('./config/')
 const gc = require('../config/')
-const bucket = gc.bucket('k01-dev') // should be your bucket name
+const bucket = gc.bucket('k01-dev') // temparory-bucket: realthytemp
 
 /**
  *
@@ -32,4 +32,17 @@ const uploadImage = (file) => new Promise((resolve, reject) => {
   .end(buffer)
 })
 
-module.exports = uploadImage
+const listBucket = () => new Promise((resolve, reject) => {
+	const [buckets] = gc.storage.getBuckets();
+	
+	resolve(buckets)
+	// console.log('Buckets:');
+	// buckets.forEach(bucket => {
+	// 	console.log(bucket.name);
+	// });
+})
+
+module.exports = {
+	uploadImage,
+	listBucket
+}
